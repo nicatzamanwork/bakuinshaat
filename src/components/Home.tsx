@@ -185,33 +185,29 @@ export function Home({ onNavigate }: HomeProps) {
           {activeCert && (
             <div
               className="fixed inset-0 z-[999] 
-               bg-black/80 backdrop-blur-sm 
-               flex items-center justify-center 
-               transition-opacity duration-300"
+                   bg-black/80 backdrop-blur-sm 
+                   flex items-center justify-center 
+                   transition-opacity duration-300"
               onClick={() => setActiveCert(null)}
             >
               <div
-                className="relative bg-black/95 rounded-xl shadow-2xl overflow-hidden"
+                className="relative bg-black/95 rounded-xl shadow-2xl overflow-hidden
+                     w-[90vw] max-w-sm sm:max-w-md lg:max-w-lg
+                     h-[70vh] sm:h-[80vh]"
                 onClick={(e) => e.stopPropagation()}
-                style={{
-                  width: "70vw",
-                  height: "85vh",
-                  maxHeight: "90vh",
-                  maxWidth: "450px",
-                }}
               >
                 {/* Close Button */}
                 <button
                   onClick={() => setActiveCert(null)}
-                  className="absolute top-4 right-4 z-20 
-                   rounded-full bg-black/60 text-white 
-                   p-2 hover:bg-black transition"
+                  className="absolute top-3 right-3 z-20 
+                       rounded-full bg-black/60 text-white 
+                       p-2 hover:bg-black transition"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
                 {/* Image */}
-                <div className="w-full h-full flex items-center justify-center bg-black p-6">
+                <div className="w-full h-full flex items-center justify-center bg-black p-3 sm:p-4 lg:p-6">
                   <img
                     src={activeCert.url}
                     alt={activeCert.name}
