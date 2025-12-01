@@ -1,6 +1,7 @@
-import { Page } from '../App';
-import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { Page } from "../App";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import LogoSecond from "../images/LogoSecond.png";
 
 interface NavigationProps {
   currentPage: Page;
@@ -11,11 +12,11 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
-    { id: 'home' as Page, label: 'Ana Səhifə' },
-    { id: 'about' as Page, label: 'Haqqımızda' },
-    { id: 'products' as Page, label: 'Məhsullar' },
-    { id: 'production' as Page, label: 'İstehsal' },
-    { id: 'contact' as Page, label: 'Əlaqə' },
+    { id: "home" as Page, label: "Ana Səhifə" },
+    { id: "about" as Page, label: "Haqqımızda" },
+    { id: "products" as Page, label: "Məhsullar" },
+    { id: "production" as Page, label: "İstehsal" },
+    { id: "contact" as Page, label: "Əlaqə" },
   ];
 
   return (
@@ -23,19 +24,13 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div 
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => onNavigate('home')}
-          >
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center">
-              <div className="text-white">BİS</div>
-            </div>
-            <div>
-              <div className="text-gray-900">Bakı </div>
-              <div className="text-xs text-gray-500">İnşaat Sənaye ASC</div>
-            </div>
+          <div className="w-70 h-12 flex items-center justify-center">
+            <img
+              src={LogoSecond}
+              alt="Bakı İnşaat Sənaye"
+              className="w-700 h-16 object-contain"
+            />
           </div>
-
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-8">
             {menuItems.map((item) => (
@@ -44,19 +39,13 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
                 onClick={() => onNavigate(item.id)}
                 className={`text-sm tracking-wide transition-colors ${
                   currentPage === item.id
-                    ? 'text-blue-900'
-                    : 'text-gray-600 hover:text-blue-900'
+                    ? "text-blue-900"
+                    : "text-gray-600 hover:text-blue-900"
                 }`}
               >
                 {item.label}
               </button>
             ))}
-            <button
-              onClick={() => onNavigate('admin')}
-              className="text-sm text-gray-400 hover:text-blue-900 transition-colors"
-            >
-              Admin
-            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,22 +69,13 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
                 }}
                 className={`block w-full text-left py-3 px-4 text-sm ${
                   currentPage === item.id
-                    ? 'text-blue-900 bg-blue-50'
-                    : 'text-gray-600'
+                    ? "text-blue-900 bg-blue-50"
+                    : "text-gray-600"
                 }`}
               >
                 {item.label}
               </button>
             ))}
-            <button
-              onClick={() => {
-                onNavigate('admin');
-                setMobileMenuOpen(false);
-              }}
-              className="block w-full text-left py-3 px-4 text-sm text-gray-400"
-            >
-              Admin
-            </button>
           </div>
         )}
       </div>
