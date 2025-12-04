@@ -8,10 +8,19 @@ import { AdminPanel } from "./components/AdminPanel";
 import { Navigation } from "./components/Navigation";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 
-export type Page = "home" | "about" | "products" | "production" | "contact";
+export type Page =
+  | "home"
+  | "about"
+  | "products"
+  | "production"
+  | "contact"
+  | "admin";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>("home");
+  const initialPage: Page =
+    window.location.pathname === "/admin" ? "admin" : "home";
+
+  const [currentPage, setCurrentPage] = useState<Page>(initialPage);
 
   const renderPage = () => {
     switch (currentPage) {
@@ -25,6 +34,8 @@ export default function App() {
         return <Production />;
       case "contact":
         return <Contact />;
+      case "admin":
+        return <AdminPanel />;
       default:
         return <Home onNavigate={setCurrentPage} />;
     }

@@ -3,6 +3,7 @@ import { HeroSlider } from "./HeroSlider";
 import { StatisticsSection } from "./StatisticsSection";
 import { CategoryCards } from "./CategoryCards";
 import { Button } from "./ui/button";
+import { useEffect } from "react";
 import pdf1 from "../pdfs/pdf1.jpeg";
 import pdf2 from "../pdfs/pdf2.jpeg";
 import pdf3 from "../pdfs/pdf3.jpeg";
@@ -22,6 +23,7 @@ import {
 import { InquiryModal } from "./InquiryModal";
 import { useState } from "react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import React from "react";
 
 interface HomeProps {
   onNavigate: (page: Page) => void;
@@ -35,6 +37,57 @@ type Certificate = {
 export function Home({ onNavigate }: HomeProps) {
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
   const [activeCert, setActiveCert] = useState<Certificate | null>(null);
+  const emailAddress = "info@metalsteel.az";
+  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    if (copied) {
+      const timer = setTimeout(() => {
+        setCopied(false);
+      }, 2500); // 2.5 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [copied]);
+
+  const handleCopyEmail = () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(emailAddress)
+        .then(() => {
+          setCopied(true); // Set state to show the success message
+        })
+        .catch((err) => {
+          console.error("Could not copy text: ", err);
+          fallbackCopyTextToClipboard(emailAddress); // Clipboard API uğursuz olduqda
+        });
+    } else {
+      // Fallback implementation if needed
+      console.warn("Clipboard API not available.");
+      fallbackCopyTextToClipboard(emailAddress); // Clipboard API mövcud olmadıqda
+    }
+  };
+
+  // Funksiya tərifini arqument qəbul edəcək şəkildə dəyişin
+  const fallbackCopyTextToClipboard = (text: string) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    // ... (Gizlətmə stilləri) ...
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      const successful = document.execCommand("copy");
+      // ... (Console log) ...
+      if (successful) {
+        setCopied(true); // Fallback uğurlu olduqda 'Copied' mesajını göstər
+      }
+    } catch (err) {
+      console.error("Fallback: Oops, unable to copy", err);
+    }
+
+    document.body.removeChild(textArea);
+  };
 
   return (
     <div>
@@ -154,7 +207,6 @@ export function Home({ onNavigate }: HomeProps) {
               Məhsullarımız dünya səviyyəli keyfiyyət standartlarına cavab verir
             </p>
           </div>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
             {[
               {
@@ -182,26 +234,30 @@ export function Home({ onNavigate }: HomeProps) {
               </div>
             ))}
           </div>
+
           {activeCert && (
             <div
-              className="fixed inset-0 z-[999] 
-                   bg-black/80 backdrop-blur-sm 
-                   flex items-center justify-center 
-                   transition-opacity duration-300"
+              className="fixed inset-0 z-[999]
+                    bg-black/80 backdrop-blur-sm
+                    flex items-center justify-center
+                    transition-opacity duration-300"
               onClick={() => setActiveCert(null)}
             >
               <div
+                // 👇 Optimized classes for better desktop scaling
                 className="relative bg-black/95 rounded-xl shadow-2xl overflow-hidden
-                     w-[90vw] max-w-sm sm:max-w-md lg:max-w-lg
-                     h-[70vh] sm:h-[80vh]"
+                    w-[90vw] max-w-sm sm:max-w-lg 
+                    lg:w-[70vw] lg:max-w-6xl lg:h-auto
+                    max-h-[95vh]
+                    h-[70vh] sm:h-[80vh]"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Close Button */}
                 <button
                   onClick={() => setActiveCert(null)}
-                  className="absolute top-3 right-3 z-20 
-                       rounded-full bg-black/60 text-white 
-                       p-2 hover:bg-black transition"
+                  className="absolute top-3 right-3 z-20
+                        rounded-full bg-black/60 text-white
+                        p-2 hover:bg-black transition"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -390,14 +446,31 @@ export function Home({ onNavigate }: HomeProps) {
               GOST, DSTU, AZS standartlarına uyğun məhsullar. Topdan satış və
               ixrac üçün bizə müraciət edin.
             </p>
-            <Button
-              onClick={() => setInquiryModalOpen(true)}
-              size="lg"
-              variant="outline"
-              className="h-12 px-8 border-white text-white hover:bg-white hover:text-blue-900"
-            >
-              Sorğu göndər
-            </Button>
+
+            {/* Button və Bildiriş üçün konteyner */}
+            <div className="relative inline-block">
+              <Button
+                onClick={handleCopyEmail}
+                size="lg"
+                variant="outline"
+                className="h-12 px-8 border-white text-white hover:bg-white hover:text-blue-900"
+              >
+                Sorğu göndər
+              </Button>
+
+              {/* 👇 Kopyalama Bildirişi 👇 */}
+              {copied && (
+                <div
+                  className="absolute top-full mt-3 left-1/2 -translate-x-1/2 
+                       bg-white text-blue-900 text-sm font-semibold py-2 px-4 rounded-lg shadow-xl 
+                       animate-fade-in-down whitespace-nowrap"
+                  role="alert"
+                >
+                  Mail address Kopyalandı!
+                </div>
+              )}
+            </div>
+            {/* 👆 Kopyalama Bildirişi 👆 */}
           </div>
         </div>
       </section>
