@@ -9,6 +9,7 @@ import pdf2 from "../pdfs/pdf2.jpeg";
 import pdf3 from "../pdfs/pdf3.jpeg";
 import pdf4 from "../pdfs/pdf4.jpeg";
 import pdf5 from "../pdfs/pdf5.jpeg";
+import pdf6 from "../pdfs/pdf6.png";
 
 import {
   MessageSquare,
@@ -200,14 +201,16 @@ export function Home({ onNavigate }: HomeProps) {
             <div className="text-sm tracking-[0.2em] text-gray-500 mb-4">
               SERTİFİKATLAR
             </div>
-            <h2 className="text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Beynəlxalq Standartlara Uyğunluq
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Məhsullarımız dünya səviyyəli keyfiyyət standartlarına cavab verir
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
+
+          {/* GRID — 3-3 düzülüşü üçün max-w-5xl və lg:grid-cols-3 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               {
                 name: "ISO 9001:2015",
@@ -218,51 +221,43 @@ export function Home({ onNavigate }: HomeProps) {
               { name: "OHSAS 18001", desc: "Əmək Təhlükəsizliyi", url: pdf3 },
               { name: "CE Marking", desc: "Avropa Uyğunluğu", url: pdf4 },
               { name: "CE Marking", desc: "Avropa Uyğunluğu", url: pdf5 },
+              { name: "CE Marking", desc: "Avropa Uyğunluğu", url: pdf6 },
             ].map((cert, idx) => (
               <div
                 key={idx}
                 type="button"
                 onClick={() => setActiveCert(cert)}
-                className="bg-white border-2 border-gray-200 p-8 text-center hover:border-blue-900 transition-colors"
+                className="bg-white border-2 border-gray-200 p-8 text-center 
+                     hover:border-blue-900 transition-all duration-300 
+                     cursor-pointer flex flex-col items-center justify-center
+                     aspect-[4/3] shadow-sm hover:shadow-md"
               >
                 <Award
                   className="w-12 h-12 text-blue-900 mx-auto mb-4"
                   strokeWidth={1.5}
                 />
-                <div className="text-gray-900 mb-2">{cert.name}</div>
+                <div className="text-gray-900 font-bold mb-2">{cert.name}</div>
                 <div className="text-sm text-gray-600">{cert.desc}</div>
               </div>
             ))}
           </div>
 
+          {/* Modal hissəsi eyni qalır */}
           {activeCert && (
             <div
-              className="fixed inset-0 z-[999]
-                    bg-black/80 backdrop-blur-sm
-                    flex items-center justify-center
-                    transition-opacity duration-300"
+              className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300"
               onClick={() => setActiveCert(null)}
             >
               <div
-                // 👇 Optimized classes for better desktop scaling
-                className="relative bg-black/95 rounded-xl shadow-2xl overflow-hidden
-                    w-[90vw] max-w-sm sm:max-w-lg 
-                    lg:w-[70vw] lg:max-w-6xl lg:h-auto
-                    max-h-[95vh]
-                    h-[70vh] sm:h-[80vh]"
+                className="relative bg-black/95 rounded-xl shadow-2xl overflow-hidden w-[90vw] max-w-sm sm:max-w-lg lg:w-[70vw] lg:max-w-6xl lg:h-auto max-h-[95vh] h-[70vh] sm:h-[80vh]"
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Close Button */}
                 <button
                   onClick={() => setActiveCert(null)}
-                  className="absolute top-3 right-3 z-20
-                        rounded-full bg-black/60 text-white
-                        p-2 hover:bg-black transition"
+                  className="absolute top-3 right-3 z-20 rounded-full bg-black/60 text-white p-2 hover:bg-black transition"
                 >
                   <X className="w-5 h-5" />
                 </button>
-
-                {/* Image */}
                 <div className="w-full h-full flex items-center justify-center bg-black p-3 sm:p-4 lg:p-6">
                   <img
                     src={activeCert.url}
